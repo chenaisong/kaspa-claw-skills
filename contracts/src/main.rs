@@ -51,6 +51,18 @@ async fn main() -> Result<()> {
         }
     }
 
+    // 示例2: 获取节点信息（使用 get_info 替代 get_node_info）
+    // Example 2: Get node info (use get_info instead of get_node_info)
+    match client.get_info().await {
+        Ok(info) => {
+            println!("\n=== 节点信息 / Node Info ===");
+            println!("Node version: {}", info.server_version);
+            println!("Is synced: {}", info.is_synced);
+        }
+        Err(e) => println!("Failed to get node info: {}", e),
+    }
+
+
     client.disconnect().await?;
     Ok(())
 }
