@@ -1,0 +1,10 @@
+[package]
+name = "kaspa-claw-skills-contract"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# 后续添加 rusty-kaspa 或 kaspa-contracts 依赖
