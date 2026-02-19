@@ -6,5 +6,17 @@ edition = "2021"
 [lib]
 crate-type = ["cdylib"]
 
+
+[[bin]]
+name = "test-rpc"
+path = "src/main.rs"
+
 [dependencies]
-# 后续添加 rusty-kaspa 或 kaspa-contracts 依赖
+kaspa-wrpc-client  = { git = "https://github.com/kaspanet/rusty-kaspa.git", branch = "master" }
+kaspa-consensus-core = { git = "https://github.com/kaspanet/rusty-kaspa.git", branch = "master" }
+kaspa-rpc-core     = { git = "https://github.com/kaspanet/rusty-kaspa.git", branch = "master" }
+kaspa-core         = { git = "https://github.com/kaspanet/rusty-kaspa.git", branch = "master" }
+kaspa-wallet-core  = { git = "https://github.com/kaspanet/rusty-kaspa.git", branch = "master" }
+workflow-rpc         = "0.18"
+tokio              = { version = "1", features = ["full"] }
+anyhow             = "1.0"                              
