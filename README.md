@@ -1,7 +1,7 @@
+
 # KaspaClawSkills
 
-Decentralized consensus library for OpenClaw AI agents skills powered by Kaspa blockchain.
-
+Decentralized consensus library for OpenClaw skills on Kaspa blockchain. Enables second-level on-chain search, purchase, payment, install, use and uninstall of skills with self-maintaining meta-skills.
 ## Goal
 Build a fully on-chain skills marketplace and consensus library on Kaspa:
 - Sub-second on-chain operations (search, order, pay, install, use, uninstall)
@@ -30,4 +30,4 @@ Build a fully on-chain skills marketplace and consensus library on Kaspa:
 ## Contribution
 Welcome PRs! See [CONTRIBUTING.md](CONTRIBUTING.md) (TODO)
 
-License: MIT
+License: Apache2.0
