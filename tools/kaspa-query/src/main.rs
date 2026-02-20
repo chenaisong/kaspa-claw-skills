@@ -1,41 +1,33 @@
-use kaspa_wrpc_client::client::{ConnectOptions, KaspaRpcClient};
-use workflow_rpc::encoding::Encoding as WrpcEncoding;
-use kaspa_wrpc_client::prelude::NetworkId;
-use kaspa_rpc_core::api::rpc::RpcApi;
+use kaspa_wrpc_client::{client::{KaspaRpcClient, ConnectOptions}, resolver::Resolver, WrpcEncoding};
+use kaspa_consensus_core::network::{NetworkId, NetworkType};
+use kaspa_wrpc_client::prelude::RpcApi;
 use anyhow::Result;
 use std::time::Duration;
 use serde_json::json;
 
 #[tokio::main]
-async fn main() -> Result<()> {
-    println!("正在连接 Kaspa Testnet10 通过 wRPC...");
-    println!("URL: ws://127.0.0.1:17210");
-
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let url = "ws://127.0.0.1:17210";
 
+    // 方式一：new 时传 url（推荐，简单）
     let client = KaspaRpcClient::new(
-        WrpcEncoding::Borsh,
+        WrpcEncoding::Borsh,                          // 或 Json，根据节点配置
         Some(url),
-        None,
-        Some(NetworkId::with_suffix(kaspa_consensus_core::network::NetworkType::Testnet, 10)),
+        None,                                         // resolver 可选
+        Some(NetworkId::with_suffix(NetworkType::Testnet, 10)),
         None,
     )?;
 
-    println!("客户端已创建，正在连接...");
+    //println!("客户端已创建，正在连接...");
 
     let options = ConnectOptions {
-        block_async_connect: true,   // 阻塞直到连接成功
+        block_async_connect: true,                    // true = 阻塞等待连接成功
         connect_timeout: Some(Duration::from_secs(15)),
+        retry_interval: Some(Duration::from_secs(3)), // 可选：失败重试间隔
         ..Default::default()
     };
 
-    match client.connect(Some(options)).await {
-        Ok(_) => println!("连接成功！"),
-        Err(e) => {
-            println!("连接失败: {:?}", e);
-            return Ok(());
-        }
-    }
+    client.connect(Some(options)).await?;
 
     // 查询 DAG 信息
     let dag_result = client.get_block_dag_info().await;
@@ -63,7 +55,6 @@ async fn main() -> Result<()> {
 
     // 只输出 JSON（无额外文本）
     println!("{}", output);
-
 
     client.disconnect().await?;
     Ok(())
